@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Depends, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 import models
 import schemas
@@ -11,6 +12,14 @@ models.Base.metadata.create_all(bind=engine)
 app = FastAPI(
     title="Spring Street Data API",
     description="Backend systems powering the Prisma factsheet experience."
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"], # Your frontend URL
+    allow_credentials=True,
+    allow_methods=["*"], # Allows all methods (GET, POST, etc.)
+    allow_headers=["*"], # Allows all headers
 )
 
 @app.get("/api/health")
